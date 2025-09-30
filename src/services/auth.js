@@ -1,21 +1,44 @@
 import api from './api';
 
 export const loginUser = async (credentials) => {
-  const response = await api.post('/auth/login/', credentials);  // Changed to /auth/login/
-  return response;
+  try {
+    const response = await api.post('/auth/login/', credentials);
+    return response;
+  } catch (error) {
+    console.error('Login error details:', error);
+    throw error;
+  }
 };
 
 export const registerDonor = async (donorData) => {
-  const response = await api.post('/auth/register/donor/', donorData);  // Changed to /auth/register/donor/
-  return response;
+  try {
+    const response = await api.post('/auth/register/donor/', donorData);
+    return response;
+  } catch (error) {
+    console.error('Registration error:', error.response);
+    throw error;
+  }
 };
 
 export const registerHospital = async (hospitalData) => {
-  const response = await api.post('/auth/register/hospital/', hospitalData);  // Changed to /auth/register/hospital/
-  return response;
+  try {
+    console.log('Sending hospital registration data to API:', hospitalData);
+    const response = await api.post('/auth/register/hospital/', hospitalData);
+    console.log('Hospital registration API response:', response);
+    return response;
+  } catch (error) {
+    console.error('Hospital registration API error:', error);
+    console.error('Error response:', error.response);
+    throw error;
+  }
 };
 
 export const getUserProfile = async () => {
-  const response = await api.get('/auth/profile/');  // Changed to /auth/profile/
-  return response;
+  try {
+    const response = await api.get('/auth/profile/');
+    return response;
+  } catch (error) {
+    console.error('Profile error:', error.response);
+    throw error;
+  }
 };

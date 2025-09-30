@@ -59,9 +59,25 @@ export const AuthProvider = ({ children }) => {
 
   const registerHospitalAccount = async (hospitalData) => {
     try {
+      console.log('Sending hospital data to API:', hospitalData);
       const response = await registerHospital(hospitalData);
-      return { success: true, data: response.data };
+      console.log('Hospital registration response:', response);
+      
+      // Check for success based on status code
+      if (response.status === 201) {
+        return { 
+          success: true, 
+          data: response.data,
+          message: response.data.message || 'Hospital registered successfully'
+        };
+      } else {
+        return { 
+          success: false, 
+          error: response.data || 'Registration failed' 
+        };
+      }
     } catch (error) {
+      console.error('Hospital registration error in context:', error);
       return { 
         success: false, 
         error: error.response?.data || 'Registration failed' 
