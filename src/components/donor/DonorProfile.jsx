@@ -15,6 +15,7 @@ const DonorProfile = () => {
   const fetchProfile = async () => {
     try {
       const response = await getDonorProfile();
+      console.log('Profile data:', response.data); // Debug log
       setProfile(response.data);
       setFormData(response.data);
     } catch (error) {
@@ -26,6 +27,7 @@ const DonorProfile = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(`Changing ${name} to:`, value); // Fixed template literal
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -35,12 +37,14 @@ const DonorProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log('Submitting form data:', formData); // Debug log
       await updateDonorProfile(formData);
       setProfile(formData);
       setEditing(false);
       setMessage('Profile updated successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
+      console.error('Update error:', error);
       setMessage('Error updating profile');
     }
   };
@@ -84,6 +88,7 @@ const DonorProfile = () => {
                 value={formData.full_name || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="Enter your full name"
               />
             </div>
 
@@ -91,7 +96,7 @@ const DonorProfile = () => {
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
-                value={formData.user?.email || ''}
+                value={formData.user?.email || formData.email || ''}
                 disabled
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-100"
               />
@@ -102,9 +107,10 @@ const DonorProfile = () => {
               <input
                 type="tel"
                 name="phone_number"
-                value={formData.user?.phone_number || ''}
+                value={formData.phone_number || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="Enter your phone number"
               />
             </div>
 
@@ -126,6 +132,7 @@ const DonorProfile = () => {
                 value={formData.emergency_contact || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="Enter emergency contact number"
               />
             </div>
 
@@ -151,7 +158,58 @@ const DonorProfile = () => {
               onChange={handleChange}
               rows={3}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+              placeholder="Enter your full address"
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">City</label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city || ''}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="City"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">State</label>
+              <input
+                type="text"
+                name="state"
+                value={formData.state || ''}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="State"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Country</label>
+              <input
+                type="text"
+                name="country"
+                value={formData.country || ''}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="Country"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Pincode</label>
+              <input
+                type="text"
+                name="pincode"
+                value={formData.pincode || ''}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500"
+                placeholder="Pincode"
+              />
+            </div>
           </div>
 
           <div className="flex justify-end space-x-4">
@@ -175,26 +233,26 @@ const DonorProfile = () => {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium text-gray-500">Full Name</label>
-              <p className="mt-1 text-lg text-gray-900">{profile?.full_name}</p>
+              <p className="mt-1 text-lg text-gray-900">{profile?.full_name || 'Not provided'}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Email</label>
-              <p className="mt-1 text-lg text-gray-900">{profile?.user?.email}</p>
+              <p className="mt-1 text-lg text-gray-900">{profile?.user?.email || profile?.email || 'Not provided'}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Phone</label>
-              <p className="mt-1 text-lg text-gray-900">{profile?.user?.phone_number}</p>
+              <p className="mt-1 text-lg text-gray-900">{profile?.phone_number || 'Not provided'}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Blood Group</label>
-              <p className="mt-1 text-lg font-bold text-red-600">{profile?.blood_group}</p>
+              <p className="mt-1 text-lg font-bold text-red-600">{profile?.blood_group || 'Not specified'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium text-gray-500">Emergency Contact</label>
-              <p className="mt-1 text-lg text-gray-900">{profile?.emergency_contact}</p>
+              <p className="mt-1 text-lg text-gray-900">{profile?.emergency_contact || 'Not provided'}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Availability</label>
@@ -218,9 +276,12 @@ const DonorProfile = () => {
 
           <div className="md:col-span-2">
             <label className="text-sm font-medium text-gray-500">Address</label>
-            <p className="mt-1 text-lg text-gray-900">{profile?.address}</p>
+            <p className="mt-1 text-lg text-gray-900">{profile?.address || 'Not provided'}</p>
             <p className="text-gray-600">
-              {profile?.city}, {profile?.state}, {profile?.country} - {profile?.pincode}
+              {profile?.city && `${profile.city}, `}
+              {profile?.state && `${profile.state}, `}
+              {profile?.country && `${profile.country}`}
+              {profile?.pincode && ` - ${profile.pincode}`}
             </p>
           </div>
         </div>

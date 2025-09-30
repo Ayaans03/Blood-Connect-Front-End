@@ -22,7 +22,7 @@ const ChatBot = () => {
     if (isOpen && messages.length === 0) {
       setMessages([
         {
-          text: "Hello! I'm your BloodConnect assistant. I'm currently in demo mode and can provide basic information about blood donation. For more detailed answers, please set up the Gemini API key.",
+          text: "Hello! I'm your BloodConnect assistant. I can provide basic information about blood donation.",
           isBot: true,
           timestamp: new Date()
         }
@@ -237,7 +237,7 @@ const ChatBot = () => {
               </button>
             </div>
             <p className="text-xs text-gray-500 text-center mt-2">
-              Demo Mode • Blood donation information
+              Blood donation information
             </p>
           </div>
         </div>
