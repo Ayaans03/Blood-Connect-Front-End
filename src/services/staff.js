@@ -1,3 +1,4 @@
+// src/services/staff.js
 import api from './api';
 
 export const getHospitalProfile = async () => {
@@ -22,5 +23,17 @@ export const getAvailableDonors = async (filters = {}) => {
   });
   
   const response = await api.get(`/donors/?${params}`);
+  return response;
+};
+
+// NEW: Get hospital statistics
+export const getHospitalStats = async () => {
+  const response = await api.get('/hospitals/stats/');
+  return response;
+};
+
+// NEW: Get request statistics by status
+export const getRequestStats = async () => {
+  const response = await api.get('/hospitals/request-stats/');
   return response;
 };

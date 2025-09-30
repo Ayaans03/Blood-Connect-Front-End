@@ -42,8 +42,7 @@ const CreateRequest = () => {
     try {
       const result = await createBloodRequest(formData);
       if (result.status === 201) {
-        // ✅ UPDATED: Better success message explaining the workflow
-        setMessage('Blood request submitted successfully! It will be reviewed by the blood bank manager before donors are notified.');
+        setMessage('Blood request submitted successfully! It will be reviewed by the blood bank.');
         setFormData({
           patient_name: '',
           patient_age: '',
